@@ -38,8 +38,17 @@ declare(strict_types=1);
 namespace nxtlvlsoftware\validatron\rule;
 
 use nxtlvlsoftware\validatron\Rule;
+use nxtlvlsoftware\validatron\TemplateList;
+use nxtlvlsoftware\validatron\utils\UndefinedValue;
 
 class Required extends Rule {
+
+	public const NOT_SET = "NOT_SET";
+
+	protected function messages(TemplateList $container) : void {
+		$container
+			->template(self::NOT_SET, '${key} is required.');
+	}
 
 	/**
 	 * @param mixed $value
@@ -47,7 +56,9 @@ class Required extends Rule {
 	 * @throws \nxtlvlsoftware\validatron\exception\ValidationFailedException
 	 */
 	public function validate(&$value) : void {
-
+		if($value instanceof UndefinedValue) {
+			$this->error(self::NOT_SET);
+		}
 	}
 
 }

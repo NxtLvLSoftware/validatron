@@ -43,6 +43,7 @@ use nxtlvlsoftware\validatron\rule\BoolType;
 use nxtlvlsoftware\validatron\rule\FloatType;
 use nxtlvlsoftware\validatron\rule\IntType;
 use nxtlvlsoftware\validatron\rule\StringType;
+use nxtlvlsoftware\validatron\utils\UndefinedValue;
 
 /**
  * Represents a collection of validation rules.
@@ -131,7 +132,7 @@ class Collection {
 
 	public function validate(FailureList $failures, ValueList $input, ValueList $output) {
 		foreach($this->rules as $rule) {
-			$value = $input->get($this->key);
+			$value = $input->has($this->key) ? $input->get($this->key) : new UndefinedValue;
 
 			try {
 				$rule->validate($value);

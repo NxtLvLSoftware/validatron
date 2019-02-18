@@ -37,6 +37,7 @@ declare(strict_types=1);
 
 namespace nxtlvlsoftware\validatron\rule\traits;
 
+use nxtlvlsoftware\validatron\utils\UndefinedValue;
 use function count;
 use function is_array;
 use function is_string;
@@ -52,7 +53,9 @@ trait ChecksEmpty {
 	 * @return bool
 	 */
 	private function isEmpty($value) : bool {
-		if(is_string($value) and strlen($value) === 0) {
+		if($value instanceof UndefinedValue) {
+			return true;
+		} elseif(is_string($value) and strlen($value) === 0) {
 			return true;
 		} elseif($value === null) {
 			return true;
