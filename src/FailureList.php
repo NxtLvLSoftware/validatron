@@ -37,8 +37,6 @@ declare(strict_types=1);
 
 namespace nxtlvlsoftware\validatron;
 
-use function array_merge;
-
 class FailureList {
 
 	/** @var array */
@@ -50,7 +48,11 @@ class FailureList {
 	 * @param \nxtlvlsoftware\validatron\Failure $failure
 	 */
 	public function add(Failure $failure) : void {
-		$this->failures[$failure->getKey()] = $failure;
+		if(!isset($this->failures[$key = $failure->getKey()])) {
+			$this->failures[$key] = [];
+		}
+
+		$this->failures[$failure->getKey()][$failure->getRule()->name()] = $failure;
 	}
 
 	/**
@@ -70,7 +72,7 @@ class FailureList {
 	 * @return int
 	 */
 	public function count() : int {
-		return count($this->failures);
+		return count($this->all());
 	}
 
 	/**
@@ -79,7 +81,16 @@ class FailureList {
 	 * @return array
 	 */
 	public function all() : array {
-		return $this->failures;
+		$failures = [];
+
+		foreach($this->failures as $key => $value) {
+			foreach($value as $failure) {
+				/** @var \nxtlvlsoftware\validatron\Failure $failure */
+				$failures[$key . ":" . $failure->getRule()->name()] = $failure;
+			}
+		}
+
+		return $failures;
 	}
 
 }
