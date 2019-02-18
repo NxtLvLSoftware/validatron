@@ -61,7 +61,7 @@ class BoolType extends Type {
 	 * @throws \nxtlvlsoftware\validatron\exception\ValidationFailedException
 	 */
 	public function validate(&$value) : void {
-		if(($this->cast and !is_bool($value)) or !(is_bool($value) or is_string($value))) {
+		if(!$this->cast and !is_bool($value)) {
 			$this->error(self::NOT_BOOL); // value isn't an bool and we were asked not to cast
 		} elseif(($corrected = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE)) === null) {
 			$this->error(self::NOT_BOOL); // value can't be safely cast to bool
