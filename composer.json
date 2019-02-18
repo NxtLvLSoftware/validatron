@@ -1,0 +1,26 @@
+{
+    "name": "nxtlvlsoftware/validatron",
+    "description": "Yet another validation package.",
+    "type": "library",
+    "license": "Unlicense",
+    "authors": [
+        {
+            "name": "Jack Noordhuis",
+            "email": "daswaggamer@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "nxtlvlsoftware\\validatron\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "nxtlvlsoftware\\tests\\validatron\\": "tests"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    }
+}
