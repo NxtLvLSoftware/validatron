@@ -131,9 +131,9 @@ class Collection {
 	}
 
 	public function validate(FailureList $failures, ValueList $input, ValueList $output) {
-		foreach($this->rules as $rule) {
-			$value = $input->has($this->key) ? $input->get($this->key) : new UndefinedValue;
+		$value = $input->has($this->key) ? $input->get($this->key) : new UndefinedValue;
 
+		foreach($this->rules as $rule) {
 			try {
 				$rule->validate($value);
 			} catch(ValidationFailedException $e) {
