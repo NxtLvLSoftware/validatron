@@ -128,8 +128,8 @@ class IntType extends Type {
 	public function validate(&$value) : void {
 		if(!$this->cast and !is_int($value)) {
 			$this->error(self::NOT_INT); // value isn't an int and we were asked not to cast
-		} elseif(is_string($value)) {
-			if(($filtered = filter_var($value, FILTER_VALIDATE_INT)) === false or !is_numeric($value)) {
+		} elseif(!is_int($value)) {
+			if(($filtered = filter_var($value, FILTER_VALIDATE_INT)) === false and !is_numeric($value)) {
 				$this->error(self::NOT_INT); // value can't be safely cast to int
 			} elseif($this->strict) {
 				if(!ctype_digit($value)) {
@@ -138,7 +138,15 @@ class IntType extends Type {
 			}
 		}
 
-		$value = (isset($filtered) ? $filtered : (int) $value);
+		if(isset($filtered)) {
+			if($filtered === false) {
+				$value = (int) $value;
+			} else {
+				$value = $filtered;
+			}
+		} else {
+			$value = (int) $value;
+		}
 
 		if(!$this->withinUpperLimit($value) or !$this->withinLowerLimit($value)) {
 			$this->error(self::NOT_IN_RANGE);

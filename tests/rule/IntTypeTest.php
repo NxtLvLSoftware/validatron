@@ -89,6 +89,7 @@ class IntTypeTest extends TestCase {
 		]);
 
 		$this->assertTrue($result->valid());
+		$this->assertEquals(13, $result->corrected()->get('test_int'));
 	}
 
 	/**
@@ -121,6 +122,40 @@ class IntTypeTest extends TestCase {
 		]);
 
 		$this->assertTrue($result->failures()->count() === 2);
+	}
+
+	/**
+	 * Make sure floats and stringy floats are cast to the correct value.
+	 */
+	public function testIntNotStrict() {
+		$this->validator
+			->required("test_float")->int()->cast()->new()
+		->required("test_string")->int()->cast();
+
+		$result = $this->validator->validate([
+			"test_float" => 3.5,
+			"test_string" => "3.9",
+		]);
+
+		$this->assertTrue($result->valid());
+		$this->assertEquals(3, $result->corrected()->get('test_float'));
+		$this->assertEquals(3, $result->corrected()->get('test_string'));
+	}
+
+	/**
+	 * Make sure floats and stringy floats fail when strict.
+	 */
+	public function testIntStrict() {
+		$this->validator
+			->required("test_float")->int()->strict()->cast()->new()
+			->required("test_string")->int()->strict()->cast();
+
+		$result = $this->validator->validate([
+			"test_float" => 3.5,
+			"test_string" => "3.9",
+		]);
+
+		$this->assertEquals(2, $result->failures()->count());
 	}
 
 }
