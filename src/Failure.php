@@ -62,21 +62,21 @@ class Failure {
 	/**
 	 * @return string
 	 */
-	public function getKey() : string {
+	public function key() : string {
 		return $this->key;
 	}
 
 	/**
 	 * @return \nxtlvlsoftware\validatron\Rule
 	 */
-	public function getRule() : Rule {
+	public function rule() : Rule {
 		return $this->rule;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getReason() : string {
+	public function reason() : string {
 		return $this->reason;
 	}
 

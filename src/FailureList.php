@@ -48,11 +48,11 @@ class FailureList {
 	 * @param \nxtlvlsoftware\validatron\Failure $failure
 	 */
 	public function add(Failure $failure) : void {
-		if(!isset($this->failures[$key = $failure->getKey()])) {
+		if(!isset($this->failures[$key = $failure->key()])) {
 			$this->failures[$key] = [];
 		}
 
-		$this->failures[$failure->getKey()][$failure->getRule()->name()] = $failure;
+		$this->failures[$failure->key()][$failure->rule()->name()] = $failure;
 	}
 
 	/**
@@ -86,7 +86,7 @@ class FailureList {
 		foreach($this->failures as $key => $value) {
 			foreach($value as $failure) {
 				/** @var \nxtlvlsoftware\validatron\Failure $failure */
-				$failures[$key . ":" . $failure->getRule()->name()] = $failure;
+				$failures[$key . ":" . $failure->rule()->name()] = $failure;
 			}
 		}
 
