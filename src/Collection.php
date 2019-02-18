@@ -142,7 +142,7 @@ class Collection {
 					$rule,
 					$e->getReason([
 						"key" => $this->key
-					]),
+					])
 				));
 			}
 		}
