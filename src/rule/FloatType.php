@@ -104,6 +104,19 @@ class FloatType extends Type {
 	}
 
 	/**
+	 * Set the value to be casted to the type being check if it is safe.
+	 *
+	 * NOTE: This override is here for documentation and code completion purposes.
+	 *
+	 * @param bool $doCast
+	 *
+	 * @return \nxtlvlsoftware\validatron\rule\FloatType|\nxtlvlsoftware\validatron\rule\Type
+	 */
+	public function cast(bool $doCast = true) : FloatType {
+		return parent::cast($doCast);
+	}
+
+	/**
 	 * Validate a value is of a float type with a cast option.
 	 *
 	 * @param mixed $value

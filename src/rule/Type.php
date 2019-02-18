@@ -51,7 +51,7 @@ abstract class Type extends Rule {
 	 *
 	 * @return \nxtlvlsoftware\validatron\rule\Type
 	 */
-	public function cast(bool $doCast = true) : Type {
+	public function cast(bool $doCast = true) {
 		$this->cast = $doCast;
 		return $this;
 	}
