@@ -145,7 +145,9 @@ class Collection {
 					]),
 				));
 			}
+		}
 
+		if(count($failures->get($this->key)) === 0) {
 			$output->set($this->key, $value);
 		}
 	}
