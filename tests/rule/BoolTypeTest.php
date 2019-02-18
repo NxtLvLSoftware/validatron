@@ -78,7 +78,7 @@ class BoolTypeTest extends TestCase {
 			"test_bool_false" => "no",
 		]);
 
-		$this->assertFalse($result->valid());
+		$this->assertTrue($result->failures()->count() === 2);
 	}
 
 	/**
