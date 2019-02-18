@@ -76,6 +76,15 @@ class FailureList {
 	}
 
 	/**
+	 * @param string $key
+	 *
+	 * @return Failure[]
+	 */
+	public function get(string $key) : array {
+		return $this->failures[$key] ?? [];
+	}
+
+	/**
 	 * Get all the failures.
 	 *
 	 * @return array
