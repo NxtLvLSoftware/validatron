@@ -52,7 +52,7 @@ class StringTypeTest extends TestCase {
 	/**
 	 * Make sure a plain string passes.
 	 */
-	public function testNormalString() {
+	public function testNormalString() : void {
 		$this->validator
 			->required("test_string")->string();
 
@@ -66,7 +66,7 @@ class StringTypeTest extends TestCase {
 	/**
 	 * Make sure a non-string isn't cast to string by default.
 	 */
-	public function testNoDefaultStringCast() {
+	public function testNoDefaultStringCast() : void {
 		$this->validator
 			->required("test_string")->string();
 
@@ -80,7 +80,7 @@ class StringTypeTest extends TestCase {
 	/**
 	 * Make sure a non-string value is casted to string when told to.
 	 */
-	public function testStringCasts() {
+	public function testStringCasts() : void {
 		$this->validator
 			->required("test_string")->string()->cast();
 
