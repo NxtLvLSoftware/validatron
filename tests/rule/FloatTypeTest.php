@@ -91,4 +91,36 @@ class FloatTypeTest extends TestCase {
 		$this->assertTrue($result->valid());
 	}
 
+	/**
+	 * Make sure floats within the bounds of the specified limit pass.
+	 */
+	public function testFloatInBounds() : void {
+		$this->validator
+			->required("test_float_upper")->float()->max(10.1)->new()
+			->required("test_float_lower")->float()->min(-1.1);
+
+		$result = $this->validator->validate([
+			"test_float_upper" => 10.1,
+			"test_float_lower" => -1.1,
+		]);
+
+		$this->assertTrue($result->valid());
+	}
+
+	/**
+	 * Make sure floats out of the specified bounds fail.
+	 */
+	public function testFloatOutOfBounds() : void {
+		$this->validator
+			->required("test_float_upper")->float()->max(10.1)->new()
+			->required("test_float_lower")->float()->min(-1.1);
+
+		$result = $this->validator->validate([
+			"test_float_upper" => 10.2,
+			"test_float_lower" => -1.2,
+		]);
+
+		$this->assertTrue($result->failures()->count() === 2);
+	}
+
 }

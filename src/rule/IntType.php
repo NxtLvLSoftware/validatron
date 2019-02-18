@@ -43,17 +43,67 @@ use function filter_var;
 use function is_int;
 use function is_numeric;
 use const FILTER_VALIDATE_INT;
+use const PHP_INT_MAX;
+use const PHP_INT_MIN;
 
 class IntType extends Type {
+
+	/** @var int|null */
+	protected $min = null;
+
+	/** @var int|null */
+	protected $max = null;
 
 	/** @var bool */
 	protected $strict = false;
 
+	public const NOT_IN_RANGE = "NOT_IN_RANGE";
 	public const NOT_INT = "NOT_INT", NOT_INTEGER = "NOT_INT";
 
 	protected function messages(TemplateList $container) : void {
 		$container
+			->parameter("min", (string) ($this->min ?? PHP_INT_MIN))
+			->parameter("max", (string) ($this->max ?? PHP_INT_MAX))
+			->template(self::NOT_IN_RANGE, '${key} must be within the range of ${min} to ${max}.')
 			->template(self::NOT_INT, '${key} must be an integer.');
+	}
+
+	/**
+	 * Limit the minimum and maximum number of times the nested value can be repeated.
+	 *
+	 * @param int|null $min
+	 * @param int|null $max
+	 *
+	 * @return \nxtlvlsoftware\validatron\rule\IntType
+	 */
+	public function limit(?int $min = null, ?int $max = null) : IntType {
+		$this->min = $min;
+		$this->max = $max;
+		return $this;
+	}
+
+	/**
+	 * Set the maximum number of times the nested value can be repeated.
+	 *
+	 * @param int|null $max
+	 *
+	 * @return \nxtlvlsoftware\validatron\rule\IntType
+	 */
+	public function max(?int $max) : IntType {
+		$this->max = $max;
+		return $this;
+	}
+
+	/**
+	 * Sets the minimum number of times the nested value should be repeated.
+	 *
+	 * @param int|null $min
+	 *
+	 * @return \nxtlvlsoftware\validatron\rule\IntType
+	 */
+	public function min(?int $min) : IntType {
+		$this->min = $min;
+		return $this;
 	}
 
 	/**
@@ -88,7 +138,41 @@ class IntType extends Type {
 			}
 		}
 
-		$value = (isset($filtered) ? $filtered : (float) $value);
+		$value = (isset($filtered) ? $filtered : (int) $value);
+
+		if(!$this->withinUpperLimit($value) or !$this->withinLowerLimit($value)) {
+			$this->error(self::NOT_IN_RANGE);
+		}
+	}
+
+	/**
+	 * Check if an integer is within the specified upper limit.
+	 *
+	 * @param int $value
+	 *
+	 * @return bool
+	 */
+	private function withinUpperLimit(int $value) : bool {
+		if($this->max !== null and $value > $this->max) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if an integer is within the specified lower limit.
+	 *
+	 * @param int $value
+	 *
+	 * @return bool
+	 */
+	private function withinLowerLimit(int $value) : bool {
+		if($this->min !== null and $value < $this->min) {
+			return false;
+		}
+
+		return true;
 	}
 
 }

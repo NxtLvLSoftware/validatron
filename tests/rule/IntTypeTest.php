@@ -91,4 +91,36 @@ class IntTypeTest extends TestCase {
 		$this->assertTrue($result->valid());
 	}
 
+	/**
+	 * Make sure integers within the bounds of the specified limit pass.
+	 */
+	public function testIntInBounds() : void {
+		$this->validator
+			->required("test_int_upper")->int()->max(10)->new()
+			->required("test_int_lower")->int()->min(-1);
+
+		$result = $this->validator->validate([
+			"test_int_upper" => 10,
+			"test_int_lower" => 0,
+		]);
+
+		$this->assertTrue($result->valid());
+	}
+
+	/**
+	 * Make sure integers out of the specified bounds fail.
+	 */
+	public function testIntOutOfBounds() : void {
+		$this->validator
+			->required("test_int_upper")->int()->max(10)->new()
+			->required("test_int_lower")->int()->min(-1);
+
+		$result = $this->validator->validate([
+			"test_int_upper" => 11,
+			"test_int_lower" => -2,
+		]);
+
+		$this->assertTrue($result->failures()->count() === 2);
+	}
+
 }
